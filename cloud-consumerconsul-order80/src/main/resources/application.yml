@@ -1,0 +1,15 @@
+server:
+  port: 80
+spring:
+  application:
+    name: cloud-consumer-order
+  cloud:
+      consul:
+        host: 192.168.3.111
+        port: 8500
+        enabled: true
+        instance-id: ${spring.application.name}:${spring.cloud.consul.port}:${random.value}
+        discovery:
+          hostname: 192.168.3.111
+          service-name: ${spring.application.name}
+          register-health-check: false #健康检查设置false，不然报红叉
