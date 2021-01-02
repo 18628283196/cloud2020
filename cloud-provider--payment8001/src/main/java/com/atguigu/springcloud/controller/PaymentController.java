@@ -56,4 +56,10 @@ public class PaymentController {
             return new CommResult(500,"服务器异常",new Payment());
         }
     }
+
+    @GetMapping("/payment/lb")
+    @ResponseBody
+    public String getPaymentlb(){
+        return serverPort;
+    }
 }

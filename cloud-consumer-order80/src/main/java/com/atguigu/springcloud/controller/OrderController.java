@@ -2,7 +2,10 @@ package com.atguigu.springcloud.controller;
 
 import com.atguigu.springcloud.entities.CommResult;
 import com.atguigu.springcloud.entities.Payment;
+import com.atguigu.springcloud.lb.MyLoadBalancer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -20,6 +26,12 @@ public class OrderController {
 
     @Resource
     private RestTemplate restTemplate;
+
+    @Resource
+    private MyLoadBalancer loadBalancer;
+
+    @Resource
+    private DiscoveryClient discoveryClient;
 
     @GetMapping("/consumer/payment/create")
     public CommResult<Payment> create(Payment payment){
@@ -41,6 +53,23 @@ public class OrderController {
         }else {
             return new CommResult<>(444,"操作失败");
         }
+
+    }
+
+    @GetMapping("/consumer/payment/lb")
+    public String getPaymentlb(){
+
+        List<ServiceInstance> list = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
+
+        if (list == null || list.size() <= 0){
+            return null;
+        }
+
+        ServiceInstance instance = loadBalancer.instance(list);
+
+        URI uri = instance.getUri();
+
+        return restTemplate.getForObject(uri+"/payment/lb", String.class);
 
     }
 
