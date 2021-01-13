@@ -6,23 +6,32 @@ eureka:
     hostname: cloud-gateway-service #服务注册中心IP地址
   client:
     registerWithEureka: true #是否向服务注册中心注册自己
-    fetchRegistry: false #是否检索服务
+    fetchRegistry: true #是否检索服务,要不要去注册中心获取其他服务的地址
     serviceUrl: #服务注册中心的配置内容，指定服务注册中心的位置
      # defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/ #单机版
-     defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
 spring:
   application:
     name: cloud-gateway
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true #开启从注册中心动态创建路由的功能，利用服务名进行路由
       routes:
         - id: payment_routh1 #路由的id，没有固定规则但要求唯一，建议配合服务名
-          uri: http://localhost:8001 #匹配后提供服务的路由地址
+          #uri: http://localhost:8001 #匹配后提供服务的路由地址
+          uri: lb://CLOUD-PAYMENT-SERVICE #匹配后提供服务的路由地址
           predicates:
             - Path=/payment/query/** #断言：路径相匹配的进行路由
-
+            - After=2021-01-12T22:52:09.943+08:00[Asia/Shanghai] #时间必须是当前时间之后并且匹配到路径后才能访问
+            #- Before=2021-01-13T22:52:09.943+08:00[Asia/Shanghai] #在这时间之前
+            #- Between=2021-01-12T22:52:09.943+08:00[Asia/Shanghai],2021-01-13T22:52:09.943+08:00[Asia/Shanghai] #在这时间之间
+            - Cookie=username,yyzz #必须携带key为usernamevalue为yyzz的才能访问，测试：curl http://localhost:9527/payment/query/1 --cookie "username=yyzz"
+            - Header=X-Request-Id,\d+ #请求头要有X-Request-Id属于并且值为整数的正则表达式，测试：curl http://localhost:9527/payment/query/1 --cookie "username=yyzz" --Header "X-Request-Id:123"
 
         - id: payment_routh2 #路由的id，没有固定规则但要求唯一，建议配合服务名
-          uri: http://localhost:8001 #匹配后提供服务的路由地址
+          #uri: http://localhost:8001 #匹配后提供服务的路由地址
+          uri: lb://CLOUD-PAYMENT-SERVICE #匹配后提供服务的路由地址
           predicates:
             - Path=/payment/lb/** #断言：路径相匹配的进行路由
