@@ -13,30 +13,14 @@
     <artifactId>cloud-config-center-3344</artifactId>
 
     <dependencies>
-        <!--config配置的jar包-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-config-server</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.atguigu.springcloud</groupId>
-            <artifactId>cloud-api-commons</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <!--actuator监控信息-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -48,7 +32,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
 
