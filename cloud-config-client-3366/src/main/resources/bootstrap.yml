@@ -1,5 +1,5 @@
 server:
-  port: 3355
+  port: 3366
 
 spring:
   application:
@@ -11,7 +11,7 @@ spring:
       name: config  #配置文件名称
       profile: dev  #读取后缀名称
       uri: http://localhost:3344  #配置中心地址
-  #rabbitmq的相关配置，15672是web管理界面的端口，5672是mq访问的端口
+#rabbitmq的相关配置，15672是web管理界面的端口，5672是mq访问的端口
   rabbitmq:
     host: localhost
     port: 5672

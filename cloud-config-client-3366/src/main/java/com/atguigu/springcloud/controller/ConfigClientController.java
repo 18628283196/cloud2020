@@ -1,4 +1,4 @@
-package com.atguigu.springcloud.config;
+package com.atguigu.springcloud.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -11,8 +11,11 @@ public class ConfigClientController {
     @Value(value = "${config.info}")
     private String configInfo;
 
+    @Value(value = "${server.port}")
+    private String serverPort;
+
     @GetMapping("configInfo")
     public String getConfigInfo(){
-        return configInfo;
+        return "serverPort:"+serverPort+"\n\t configInfo:"+configInfo;
     }
 }

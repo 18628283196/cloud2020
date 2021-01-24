@@ -28,6 +28,7 @@
         <module>cloudconfigcenter3344</module>
         <module>spring-config-center-3344</module>
         <module>cloud-config-client-3355</module>
+        <module>cloud-config-client-3366</module>
     </modules>
 
 
